@@ -3,11 +3,13 @@ import { StyleSheet,
         View, 
         Dimensions, 
         ScrollView,
-        Image } from 'react-native'
+        Image,
+        FlatList } from 'react-native'
 import React from 'react';
 import { Icon } from 'react-native-elements';
 import { colors, parameters } from '../global/styles';
 import { StatusBar } from 'expo-status-bar';
+import { filterData } from '../global/data';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -25,10 +27,10 @@ const HomeScreen = () => {
       </View>
       <ScrollView bounces = {false}>
         <View style = {styles.home}> 
-          <Text style ={styles.text1}>Rota Drop-off</Text>
+          <Text style ={styles.text1}>Destress your commute</Text>
           <View style = {styles.view1}>
             <View style = {styles.view8}>
-              <Text style ={styles.text2}> Gracie Barra Vancouver</Text>
+              <Text style ={styles.text2}>Read a book. Take a nap. Stare out the window</Text>
               <View style = {styles.button1}>
                 <Text style ={styles.button1Text}>Ride with Uber</Text>
               </View>
@@ -40,6 +42,88 @@ const HomeScreen = () => {
             </View>
           </View>
         </View>
+        <View>
+          <FlatList
+            numRows={4}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data = {filterData}
+            keyExtractor={(item)=>item.id}
+            renderItem={ ({item}) => (
+              <View style = {styles.card}>
+                <View style = {styles.view2}>
+                  <Image style ={styles.image2} source={item.image}/>
+                </View>
+                <View>
+                    <Text style = {styles.title}>{item.name}</Text>
+                </View>
+
+              </View>
+              )}
+          />
+        </View>
+        <View style = {styles.view3}>
+          <Text style = {styles.text3}> Where to?</Text>
+          <View style = {styles.view4}>
+            <Icon type = "material-community" 
+                  name = "clock-time-five"
+                  color = {colors.gray1}
+                  size = {26}
+            />
+            <Text style = {{marginLeft:5}}>Now</Text>
+            <Icon type = "material-community"
+                  name = "chevron-down"
+                  color = {colors.gray1}
+                  size = {26}
+            />
+          </View>
+        </View>
+        <View style={styles.view5}> 
+              <View style = {styles.view6}>
+                <View style = {styles.view7}>
+                  <Icon type = "material-community"
+                    name = "map-marker"
+                    color = {colors.black}
+                    size = {22}
+                  />
+                </View>
+                <View>
+                  <Text style ={{fontSize:18,color:colors.black}}>Home </Text>
+                  <Text style={{color:colors.gray3}}>271 Francis Way, New Westminster </Text> 
+                </View>
+              </View>
+              <View>
+                <Icon type = "material-community"
+                    name = "chevron-right"
+                    color = {colors.grey}
+                    size = {26}
+                />
+              </View>
+        </View>
+        
+        <View style={{...styles.view5, borderBottomWidth:0}}> 
+              <View style = {styles.view6}>
+                <View style = {styles.view7}>
+                  <Icon type = "material-community"
+                    name = "map-marker"
+                    color = {colors.black}
+                    size = {22}
+                  />
+                </View>
+                <View>
+                  <Text style ={{fontSize:18,color:colors.black}}>Work </Text>
+                  <Text style={{color:colors.gray3}}>2440 Main St, Vancouver</Text> 
+                </View>
+              </View>
+              <View>
+                <Icon type = "material-community"
+                    name = "chevron-right"
+                    color = {colors.grey}
+                    size = {26}
+                />
+              </View>
+        </View>
+        <Text style = {styles.text4}> Around you</Text>
       </ScrollView>
       <StatusBar style = "light" backgroundColor='#2058c0' translucent={true}/>
     </View>
