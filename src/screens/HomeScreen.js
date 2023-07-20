@@ -1,13 +1,19 @@
-import { StyleSheet, Text, View, Dimensions, ScrollView } from 'react-native'
+import { StyleSheet, 
+        Text, 
+        View, 
+        Dimensions, 
+        ScrollView,
+        Image } from 'react-native'
 import React from 'react';
 import { Icon } from 'react-native-elements';
 import { colors, parameters } from '../global/styles';
+import { StatusBar } from 'expo-status-bar';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const HomeScreen = () => {
   return (
-    <View styles = {styles.container}>
+    <View style = {styles.container}>
       <View style = {styles.header}>
           <View style = {styles.icon1}>
             <Icon type = "material-community" 
@@ -17,6 +23,25 @@ const HomeScreen = () => {
             />
           </View>
       </View>
+      <ScrollView bounces = {false}>
+        <View style = {styles.home}> 
+          <Text style ={styles.text1}>Rota Drop-off</Text>
+          <View style = {styles.view1}>
+            <View style = {styles.view8}>
+              <Text style ={styles.text2}> Gracie Barra Vancouver</Text>
+              <View style = {styles.button1}>
+                <Text style ={styles.button1Text}>Ride with Uber</Text>
+              </View>
+            </View>
+            <View>
+              <Image 
+                style = {styles.image1}
+                source= {require('../../assets/uberCar.png') } />
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+      <StatusBar style = "light" backgroundColor='#2058c0' translucent={true}/>
     </View>
   )
 }
@@ -33,8 +58,8 @@ const styles = StyleSheet.create({
       },
       header:{
         backgroundColor:colors.blue,
-        paddingTop:parameters.statusBarHeight,
-        heigh:parameters.headerHeight,
+        //paddingTop:parameters.statusBarHeight,
+        height:parameters.headerHeight,
         alignItems:"flex-start"
       },
       image1:{
@@ -57,10 +82,14 @@ const styles = StyleSheet.create({
         paddingTop:20
       },
       text2:{
+       color:colors.white,
+       fontSize:16
+      },
+      view1:{
         flexDirection:"row",
         flex:1,
         paddingTop:30
-      },
+       },
     
       button1:{
         height:40,
