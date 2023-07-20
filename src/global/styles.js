@@ -28,6 +28,7 @@ export const colors = {
     heaherText:"white",
     lightgreen: '#66DF48',
     blue:'#286ef0',
+    red:'#c70e14',
     black: "#000000",
     white: "#ffffff",
     darkBlue:"#2d328a",
