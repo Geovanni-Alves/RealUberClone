@@ -9,18 +9,30 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#323ea8"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier":"com.RealUberClone",
+      "config":{"googleMapsApiKey":"AIzaSyDNnub4nhOqbRXBsy4ikxoR55WGzpflZRE"
+      
+    }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+
+      "package":"com.RealUberClone",
+      "config":{
+        "googleMaps":{
+          "apiKey":"AIzaSyDNnub4nhOqbRXBsy4ikxoR55WGzpflZRE"
+        },
+        "permissions":["ACESS_COARSE_LOCATION","ACESS_FINE_LOCATION","FOREGROUND_SERVICE"]
       }
     },
     "web": {

@@ -4,12 +4,16 @@ import { StyleSheet,
         Dimensions, 
         ScrollView,
         Image,
-        FlatList } from 'react-native'
+        FlatList } from 'react-native';
+import MapView, {PROVIDER_GOOGLE,} from 'react-native-maps';
 import React from 'react';
 import { Icon } from 'react-native-elements';
 import { colors, parameters } from '../global/styles';
 import { StatusBar } from 'expo-status-bar';
 import { filterData } from '../global/data';
+
+//import { PROVIDER_GOOGLE } from 'react-native-maps';
+//import { GOOGLE_MAPS_APIKEY } from '@env';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -124,6 +128,13 @@ const HomeScreen = () => {
               </View>
         </View>
         <Text style = {styles.text4}> Around you</Text>
+        <View style = {{alignItems:"center",justifyContent:"center"}}>
+        <MapView
+            provider = '{PROVIDER_GOOGLE}'
+            style = {styles.map}
+          >
+          </MapView>
+        </View>
       </ScrollView>
       <StatusBar style = "light" backgroundColor='#2058c0' translucent={true}/>
     </View>
