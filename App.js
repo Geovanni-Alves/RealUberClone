@@ -2,11 +2,14 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import React from 'react'
 
 import RootNavigator from './src/navigations/RootNavigator';
+import { OriginContextProvider } from './src/contexts/contexts';
 
 
 const App = () => {
   return (
-    <RootNavigator />
+    <OriginContextProvider>
+      <RootNavigator />
+    </OriginContextProvider>
   )
 }
 

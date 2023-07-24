@@ -1,6 +1,7 @@
 import { StyleSheet, 
         Text, 
-        View, 
+        View,
+        SafeAreaView, 
         Dimensions, 
         ScrollView,
         Image,
@@ -16,6 +17,7 @@ import { colors, parameters } from '../global/styles';
 import { StatusBar } from 'expo-status-bar';
 import { filterData, carsAround } from '../global/data';
 import { mapStyle } from "../global/mapStyle";
+
 
 //import { GOOGLE_MAPS_APIKEY } from '@env';
 
@@ -60,7 +62,7 @@ const HomeScreen = ({navigation}) => {
   ,[]})
 
   return (
-    <View style = {styles.container}>
+    <SafeAreaView style = {styles.container}>
       <View style = {styles.header}>
           <View style = {styles.icon1}>
             <Icon type = "material-community" 
@@ -198,7 +200,7 @@ const HomeScreen = ({navigation}) => {
         </View>
       </ScrollView>
       <StatusBar style = "light" backgroundColor='#2058c0' translucent={true}/>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -340,7 +342,7 @@ const styles = StyleSheet.create({
       },
     
       icon1: {marginLeft:10,
-              marginTop:12,
+              //marginTop:12,
               padding:7
             },
     

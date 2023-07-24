@@ -1,16 +1,26 @@
 import { StyleSheet, Text, View,SafeAreaView,Dimensions, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, {useState,useContext, useEffect} from 'react'
 import { Avatar, Icon } from 'react-native-elements';
 import { colors,parameters } from '../global/styles';
 import MapComponent from '../components/MapComponent';
-
+import { OriginContext } from '../contexts/contexts';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default function RequestScreen({navigation}) {
+  const {origin, dispatchOrigin} = useContext(OriginContext)
+  const [userOrigin,setUserOrigin] = useState({latitude:origin.latitude,
+                                              longitude:origin.longitude,
+
+                                            })
+  useEffect(()=>{
+    setUserOrigin({latitude:origin.latitude,
+      Longitude:origin.longitude,
+    })
+  },[origin])
   return (
-    <SafeAreaView style = {styles.droidSafeArea}> 
+    <SafeAreaView style = {styles.container}> 
       <View style={styles.view1}>
         <TouchableOpacity>
           <Icon
@@ -18,6 +28,7 @@ export default function RequestScreen({navigation}) {
             name="arrow-left"
             color={colors.grey1}
             size={32}
+            
           />      
         </TouchableOpacity>
       </View>
@@ -71,7 +82,7 @@ export default function RequestScreen({navigation}) {
           
         </View>
       </View>
-      <MapComponent/>
+      <MapComponent userOrigin={userOrigin}/>
     </SafeAreaView>
   )
 }
@@ -88,10 +99,6 @@ container: {
     marginTop:12,
     paddingTop:parameters.statusBarHeight
 
-  },
-  droidSafeArea: {
-    flex: 1,
-    paddingTop: Platform.OS === 'android' ? 25 : 0
   },
   contentContainer: {
     flex: 1,

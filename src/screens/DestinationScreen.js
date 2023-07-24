@@ -1,42 +1,86 @@
 import { Avatar, Icon } from 'react-native-elements';
 import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import React, {useContext, useRef} from 'react'
 import { colors,parameters } from '../global/styles';
+import {GOOGLE_MAPS_APIKEY} from "@env";
+import { OriginContext } from '../contexts/contexts';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
+//navigator.geolocation = require('@react-native-community/geolocation');
+//navigator.geolocation = require('react-native-geolocation-service');
 
-const DestinationScreen = () => {
+//console.log(parameters.statusBarHeight)
+const DestinationScreen = ({navigation}) => {
+    
+    const {dispatchOrigin} = useContext(OriginContext)
+    const textInput1 = useRef(4);
+    const textInput2 = useRef(5);
   return (
-    <SafeAreView style = {styles.container}>
-        <View style={styles.view1}>
+    <>
+        <View style ={styles.view2}>
+            <View style={styles.view1}>
+                <TouchableOpacity>
+                    <Icon
+                    type="material-community"
+                    name="arrow-left"
+                    color={colors.grey1}
+                    size={32}
+                    onPress={()=>navigation.goBack()}
+                    />      
+                </TouchableOpacity>
+            </View>
             <TouchableOpacity>
-                <Icon
-                type="material-community"
-                name="arrow-left"
-                color={colors.grey1}
-                size={32}
-                />      
+                <View style ={{top:25,alignItems:"center"}}>
+                    <View style = {styles.view3}>
+                    <Avatar 
+                        rounded
+                        avatarStyle={{}}
+                        size={30}
+                        source={require('../../assets/blankProfilePic.jpg')}
+                    />
+                    <Text style={{marginLeft:5}}>For me</Text>
+                    <Icon
+                        type="material-community"
+                        name="chevron-down"
+                        color={colors.grey1}
+                        size={26}
+                    />
+                    </View>
+                </View>
             </TouchableOpacity>
         </View>
-        <TouchableOpacity>
-            <View style = {styles.view3}>
-            <Avatar 
-                rounded
-                avatarStyle={{}}
-                size={30}
-                source={require('../../assets/blankProfilePic.jpg')}
-            />
-            <Text style={{marginLeft:5}}>For me</Text>
-            <Icon
-                type="material-community"
-                name="chevron-down"
-                color={colors.grey1}
-                size={26}
-            />
-            </View>
-        </TouchableOpacity>
-    </SafeAreView>
+        <GooglePlacesAutocomplete
+            nearbyPlacesAPI='GooglePlacesSearch'
+            placeholder='Going to...'
+            listViewDisplayed = "auto"
+            debounce={400}
+            currentLocation = {true}
+            currentLocationLabel='Current location'
+            ref = {textInput1}
+            minLength={2}
+            enablePoweredByContainer ={false}
+            fetchDetails ={true}
+            autoFocus = {true}
+            styles = {autoComplete}
+            query = {
+                {
+                key:GOOGLE_MAPS_APIKEY,
+                Language:"en"
+            }}
+            onPress={(data,details = null)=>{
+                console.log(details)
+                dispatchOrigin({type:"ADD_ORIGIN",payload:{
+                    latitude:details.geometry.location.lat,
+                    longitude:details.geometry.location.lng,
+                    address:details.formatted_address,
+                    name:details.name
+                }})
+                navigation.goBack();
+            }}
+        />
+    </>
   )
 }
 
@@ -45,11 +89,12 @@ export default DestinationScreen
 const styles = StyleSheet.create({
 
     container: {
-        //flex: 1,
+        flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        //paddingTop:parameters.statusBarHeight
+        //marginTop:12,
+        paddingTop:parameters.statusBarHeight
     },
     
     view1:{
@@ -62,7 +107,7 @@ const styles = StyleSheet.create({
       borderRadius:20,
       justifyContent:"center",
       alignItems:"center",
-      marginTop:12, 
+      marginTop:1, 
       zIndex: 10
       
     },
