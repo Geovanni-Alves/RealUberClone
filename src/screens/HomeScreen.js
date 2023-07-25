@@ -78,7 +78,7 @@ const HomeScreen = ({navigation}) => {
           <View style = {styles.view1}>
             <View style = {styles.view8}>
               <Text style ={styles.text2}>Read a book. Take a nap. Stare out the window</Text>
-              <TouchableOpacity onPress={()=>{navigation.navigate("RequestScreen")}}>
+              <TouchableOpacity onPress={()=>{navigation.navigate("RequestScreen",{state:0})}}>
                 <View style = {styles.button1}>
                   <Text style ={styles.button1Text}>Ride with Uber</Text>
                 </View>

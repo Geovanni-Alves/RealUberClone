@@ -114,7 +114,7 @@ const DestinationScreen = ({navigation}) => {
                         address:details.formatted_address,
                         name:details.name
                     }})
-                    navigation.goBack();
+                    navigation.navigate("RequestScreen",{state:0});
                 }}
             />
         }
