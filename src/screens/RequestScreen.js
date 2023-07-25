@@ -3,22 +3,27 @@ import React, {useState,useContext, useEffect} from 'react'
 import { Avatar, Icon } from 'react-native-elements';
 import { colors,parameters } from '../global/styles';
 import MapComponent from '../components/MapComponent';
-import { OriginContext } from '../contexts/contexts';
+import { OriginContext,DestinationContext } from '../contexts/contexts';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default function RequestScreen({navigation}) {
-  const {origin, dispatchOrigin} = useContext(OriginContext)
+  const {origin,dispatchOrigin} = useContext(OriginContext)
   const [userOrigin,setUserOrigin] = useState({latitude:origin.latitude,
-                                              longitude:origin.longitude,
-
-                                            })
+                                              longitude:origin.longitude})
+  
+  const {destination,dispatchDestination} = useContext(DestinationContext)
+  const [userDestination,setUserDestination] = useState({latitude:destination.latitude,
+                                                         longitude:destination.longitude})
+  
   useEffect(()=>{
     setUserOrigin({latitude:origin.latitude,
-      Longitude:origin.longitude,
-    })
-  },[origin])
+      longitude:origin.longitude});
+    setUserDestination({latitude:destination.latitude,
+      longitude:destination.longitude})
+  },[origin,destination])
+
   return (
     <SafeAreaView style = {styles.container}> 
       <View style={styles.view1}>
@@ -28,7 +33,7 @@ export default function RequestScreen({navigation}) {
             name="arrow-left"
             color={colors.grey1}
             size={32}
-            
+            onPress={()=>navigation.goBack()}
           />      
         </TouchableOpacity>
       </View>
@@ -82,7 +87,7 @@ export default function RequestScreen({navigation}) {
           
         </View>
       </View>
-      <MapComponent userOrigin={userOrigin}/>
+      <MapComponent userOrigin={userOrigin} userDestination={userDestination}/>
     </SafeAreaView>
   )
 }

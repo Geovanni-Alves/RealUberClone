@@ -1,10 +1,10 @@
 import { Avatar, Icon } from 'react-native-elements';
 import { StyleSheet, Text, View, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import React, {useContext, useRef} from 'react'
+import React, {useContext, useRef, useState} from 'react'
 import { colors,parameters } from '../global/styles';
 import {GOOGLE_MAPS_APIKEY} from "@env";
-import { OriginContext } from '../contexts/contexts';
+import { OriginContext, DestinationContext } from '../contexts/contexts';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -15,8 +15,13 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const DestinationScreen = ({navigation}) => {
     
     const {dispatchOrigin} = useContext(OriginContext)
+    const {dispatchDestination} = useContext(DestinationContext)
+    
     const textInput1 = useRef(4);
     const textInput2 = useRef(5);
+
+    const[destination,setDestination] = useState(false)
+
   return (
     <>
         <View style ={styles.view2}>
@@ -51,35 +56,68 @@ const DestinationScreen = ({navigation}) => {
                 </View>
             </TouchableOpacity>
         </View>
-        <GooglePlacesAutocomplete
-            nearbyPlacesAPI='GooglePlacesSearch'
-            placeholder='Going to...'
-            listViewDisplayed = "auto"
-            debounce={400}
-            currentLocation = {true}
-            currentLocationLabel='Current location'
-            ref = {textInput1}
-            minLength={2}
-            enablePoweredByContainer ={false}
-            fetchDetails ={true}
-            autoFocus = {true}
-            styles = {autoComplete}
-            query = {
-                {
-                key:GOOGLE_MAPS_APIKEY,
-                Language:"en"
-            }}
-            onPress={(data,details = null)=>{
-                console.log(details)
-                dispatchOrigin({type:"ADD_ORIGIN",payload:{
-                    latitude:details.geometry.location.lat,
-                    longitude:details.geometry.location.lng,
-                    address:details.formatted_address,
-                    name:details.name
-                }})
-                navigation.goBack();
-            }}
-        />
+        {destination === false &&
+            <GooglePlacesAutocomplete
+                nearbyPlacesAPI='GooglePlacesSearch'
+                placeholder='From...'
+                listViewDisplayed = "auto"
+                debounce={400}
+                //currentLocation = {true}
+                currentLocationLabel='Current location'
+                ref = {textInput1}
+                minLength={2}
+                enablePoweredByContainer ={false}
+                fetchDetails ={true}
+                autoFocus = {true}
+                styles = {autoComplete}
+                query = {
+                    {
+                    key:GOOGLE_MAPS_APIKEY,
+                    Language:"en"
+                }}
+                onPress={(data,details = null)=>{
+                    //console.log(details)
+                    dispatchOrigin({type:"ADD_ORIGIN",payload:{
+                        latitude:details.geometry.location.lat,
+                        longitude:details.geometry.location.lng,
+                        address:details.formatted_address,
+                        name:details.name
+                    }})
+                    setDestination(true)
+                }}
+            />
+        }
+        {destination === true &&
+            <GooglePlacesAutocomplete
+                nearbyPlacesAPI='GooglePlacesSearch'
+                placeholder='Going to...'
+                listViewDisplayed = "auto"
+                debounce={400}
+                //currentLocation = {true}
+                currentLocationLabel='Current location'
+                ref = {textInput2}
+                minLength={2}
+                enablePoweredByContainer = {false}
+                fetchDetails ={true}
+                autoFocus = {true}
+                styles = {autoComplete}
+                query = {
+                    {
+                    key:GOOGLE_MAPS_APIKEY,
+                    Language:"en"
+                }}
+                onPress={(data,details = null)=>{
+                    //console.log(details)
+                    dispatchDestination({type:"ADD_DESTINATION",payload:{
+                        latitude:details.geometry.location.lat,
+                        longitude:details.geometry.location.lng,
+                        address:details.formatted_address,
+                        name:details.name
+                    }})
+                    navigation.goBack();
+                }}
+            />
+        }
     </>
   )
 }
