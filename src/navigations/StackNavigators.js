@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import RequestScreen from '../screens/RequestScreen'
 import DestinationScreen from '../screens/DestinationScreen';
+import SendLocationScreen from '../screens/SendLocationScreen';
 
 const Home = createNativeStackNavigator();
 
@@ -22,6 +23,11 @@ export function HomeStack(){
             <Home.Screen
                 name = "DestinationScreen"
                 component={DestinationScreen}
+                options ={{headerShown:false}}
+            />
+            <Home.Screen
+                name = "SendLocationScreen"
+                component={SendLocationScreen}
                 options ={{headerShown:false}}
             />
         </Home.Navigator>

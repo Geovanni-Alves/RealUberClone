@@ -83,6 +83,11 @@ const HomeScreen = ({navigation}) => {
                   <Text style ={styles.button1Text}>Ride with Uber</Text>
                 </View>
               </TouchableOpacity>
+              <TouchableOpacity onPress={()=>{navigation.navigate("SendLocationScreen",{state:0})}}>
+                <View style = {styles.button1}>
+                  <Text style ={styles.button1Text}>Share a user Location</Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <View>
               <Image 

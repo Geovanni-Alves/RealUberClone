@@ -52,7 +52,8 @@ export default function RequestScreen({navigation, route}) {
   </View>
   
   ),[])
-
+    console.log('its is the Latitude of User Origin: ' + userOrigin.latitude);
+    console.log('its is the Longitude of User Origin: ' + userOrigin.longitude);
   return (
     <SafeAreaView style = {styles.container}> 
       <View style={styles.view1}>
@@ -117,6 +118,7 @@ export default function RequestScreen({navigation, route}) {
         </View>
       </View>
       <MapComponent userOrigin={userOrigin} userDestination={userDestination}/>
+      {/*
       <BottomSheet
         ref = {bottomsheet1}
         index = {route.params.state}
@@ -175,7 +177,7 @@ export default function RequestScreen({navigation, route}) {
             </View>           
           }
         />
-      </BottomSheet>
+      </BottomSheet>*/}
     </SafeAreaView>
   )
 }

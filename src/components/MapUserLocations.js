@@ -13,9 +13,9 @@ export class MapComponent extends Component {
       this.state = {
 
       }
-      this._map = React.createRef(5)
+      this._map = React.createRef(7)
   }
-  
+
   componentDidUpdate(){
     setTimeout(()=>{
       if(this.props.userDestination.latitude !== null){
