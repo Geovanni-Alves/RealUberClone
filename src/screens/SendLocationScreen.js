@@ -114,6 +114,9 @@ export default function MapScreen({ navigation }) {
             <TouchableOpacity style={styles.goBackButton} onPress={handleGoBack}>
                 <Text style={styles.goBackButtonText}>Go Back</Text>
             </TouchableOpacity> 
+            <TouchableOpacity style={styles.shareButton} >
+                <Text style={styles.shareButtonText}>Share Location (Mongo DB)</Text>
+            </TouchableOpacity>
         </View>    
     </SafeAreaView>
   );
@@ -144,5 +147,20 @@ const styles = StyleSheet.create({
   goBackButtonText: {
     color: 'black',
     fontWeight: 'bold',
+  },
+  shareButton: {
+    position:'absolute',
+    top: 20,
+    right: 1,
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    zIndex: 1,
+  },
+  shareButtonText: {
+    color: 'black',
+    fontWeight: 'bold',
+
   },
 });
