@@ -3,11 +3,34 @@ import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'rea
 import MapView, { Circle,Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import io from 'socket.io-client';
+import axios from 'axios';
+
+const SERVER_URL = 'http://localhost:5000' // needs to change for a cloud service which will host the backend server
+const socket = io(SERVER_URL);
 
 
 export default function MapScreen({ navigation }) {
   const [location, setLocation] = useState(null);
   const [mapReady, setMapReady] = useState(false);
+
+  const checkServerStatus = () => {
+    try {
+      //console.log(SERVER_URL);
+      const response =  fetch(`${SERVER_URL}/`);
+      console.log(response);
+      if (response.ok) {
+        console.log('Server is running!');
+      } else {
+        console.log('Server is not reachable.');
+      }
+    } catch (error) {
+      console.error('Error checking server status:', error);
+    }
+  };
+  
+  // Call the function to check the server status
+ 
 
   useEffect(() => {
     (async () => {
@@ -24,6 +47,51 @@ export default function MapScreen({ navigation }) {
 
   const handleMapReady = () => {
     setMapReady(true);
+  };
+
+  const sendLocation = () => {
+    checkServerStatus();
+    const lat = location.coords.latitude;
+    const lng = location.coords.longitude;
+    const locationData = {lat, lng}
+    //console.log(lat);
+    //console.log(lng);
+
+
+
+    // send location data to the backend
+    // Use 'axios' to make HTTP requests to the backend server
+    /*
+    axios.post('http://localhost:5000/api/locations', {
+      latitude: lat, //40.7128,
+      longitude: lng, //-74.0060,
+    })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error('Error sending location:', error);
+    });
+    socket.on('locationChange', (data) => {
+      console.log('Received location update:', data);
+      // Handle the received location update in your React Native app
+    });
+    */
+    fetch('http://localhost:5000/api/locations',{
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(locationData),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data.message);
+    })
+    .catch((error) => {
+      console.error('Error sending :', error);
+    });
+    
   };
 
   const handleRegionChangeComplete = () => {
@@ -114,9 +182,11 @@ export default function MapScreen({ navigation }) {
             <TouchableOpacity style={styles.goBackButton} onPress={handleGoBack}>
                 <Text style={styles.goBackButtonText}>Go Back</Text>
             </TouchableOpacity> 
-            <TouchableOpacity style={styles.shareButton} >
-                <Text style={styles.shareButtonText}>Share Location (Mongo DB)</Text>
-            </TouchableOpacity>
+            {location &&
+              <TouchableOpacity style={styles.shareButton} onPress={sendLocation}>
+                  <Text style={styles.shareButtonText}>Share Location (Mongo DB)</Text>
+              </TouchableOpacity>
+            }
         </View>    
     </SafeAreaView>
   );
