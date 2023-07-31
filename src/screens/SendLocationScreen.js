@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import MapView, { Circle, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,8 +10,9 @@ export default function MapScreen({ navigation }) {
   const [location, setLocation] = useState(null);
   const [mapReady, setMapReady] = useState(false);
   const [sharingStatus, setSharingStatus] = useState(false);
-  //const locationSubscriptionRef = useRef(null); //useRef({ remove: () => {} });
-  let locationSubscription = false;
+  const [locationSubscription, setLocationSubscription] = useState(null);
+  const [intervalId, setIntervalId] = useState(null);
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -25,62 +26,11 @@ export default function MapScreen({ navigation }) {
     })();
   }, []);
 
-
-  useEffect(() => {
-    //console.log(sharingStatus);
-    if (sharingStatus) {
-      //console.log('entrou no location watch');
-      // Start sharing, if sharingStatus is true (i.e., we are starting to share)
-      locationSubscription = Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy = 6,
-          timeInterval: 5000, 
-          distanceInterval: 1, 
-        },
-        console.log('enviando localizacao')
-        //sendLocation
-      );
-    } 
-    //console.log(locationSubscription);
-
-   
-    console.log(sharingStatus);
-    return () => {
-      if (!locationSubscription && !sharingStatus) {
-        setSharingStatus(false);
-        console.log('clicou no stop share');
-      }
-      // Clean up the location subscription when the component unmounts
-   
-    }
-  }, [sharingStatus]);
-
   const handleMapReady = () => {
     setMapReady(true);
   };
 
-  const sendLocation = () => {
-    if (location?.coords) {
-      const lat = location.coords.latitude;
-      const lng = location.coords.longitude;
-
-      fetch(`${SERVER_URL}/api/locations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ latitude: lat, longitude: lng }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.message);
-        })
-        .catch((error) => {
-          console.error('Error sending:', error);
-        });
-    }
-  };
-
+  
   const handleGoBack = () => {
     navigation.goBack();
   };
@@ -117,6 +67,83 @@ export default function MapScreen({ navigation }) {
     setSharingStatus((prevStatus) => !prevStatus); // Toggle the sharing status (start or stop sharing)
   };
 
+  useEffect(() => {
+    if (sharingStatus) {
+      console.log('Starting location watch');
+      const subscription = Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 5000,
+          distanceInterval: 0.010,
+        },
+        (location) => {
+          console.log('Sending location', location);
+          //sendLocation(location);
+          // Implement your logic to send the location data to the server here
+        }
+      );
+      setLocationSubscription(subscription);
+      // Start sending location updates to the server every 5 seconds
+      const id = setInterval(() => {
+        if (locationSubscription) {
+          Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High }).then((location) => {
+            console.log('Sending location', location);
+            //sendLocation(location);
+          });
+        }
+      }, 5000);
+      setIntervalId(id);
+
+
+    } else {
+      console.log('Stopping location watch');
+      if (locationSubscription) {
+        locationSubscription.remove();
+        
+      }
+      setLocationSubscription(null);
+      if (intervalId) {
+        clearInterval(intervalId);
+        setIntervalId(null);
+      }
+    }
+
+    // Clean up the location subscription when the component unmounts
+
+  }, [sharingStatus]);
+
+  useEffect(() => {
+    // Clean up the location subscription when the component unmounts
+    return () => {
+      if (locationSubscription) {
+        locationSubscription.remove();
+      }
+    };
+  }, []);
+
+  const sendLocation = (location) => {
+    if (location?.coords) {
+      const lat = location.coords.latitude;
+      const lng = location.coords.longitude;
+
+      fetch(`${SERVER_URL}/api/locations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ latitude: lat, longitude: lng }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.message);
+        })
+        .catch((error) => {
+          console.error('Error sending:', error);
+        });
+    }
+  };
+
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
