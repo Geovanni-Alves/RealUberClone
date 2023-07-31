@@ -64,7 +64,6 @@ export default function MapScreen({ navigation }) {
   const sendLocation = () => {
     const lat = location.coords.latitude;
     const lng = location.coords.longitude;
-    const locationData = {lat, lng}
 
     fetch(`${SERVER_URL}/api/locations`,{
         method: 'POST',
