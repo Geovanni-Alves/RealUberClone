@@ -4,6 +4,7 @@ import HomeScreen from '../screens/HomeScreen';
 import RequestScreen from '../screens/RequestScreen'
 import DestinationScreen from '../screens/DestinationScreen';
 import SendLocationScreen from '../screens/SendLocationScreen';
+//import LocationScreen from '../screens/LocationScreen';
 
 const Home = createNativeStackNavigator();
 

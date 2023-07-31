@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-const PORT = process.env.PORT || 5000;
+const PORT = 3000;
 const MONGODB_URI = 'mongodb+srv://geodarth:G&o150105@cluster0.4zerhpi.mongodb.net/vanTracker?retryWrites=true&w=majority'; // Replace 'your_db_name' with your MongoDB database name
 
 //console.log(server);
@@ -36,6 +36,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Welcome to the server!');
 });
+
 // API endpoint to receive location data
 app.post('/api/locations', (req, res) => {
   const { latitude, longitude } = req.body;
@@ -56,5 +57,5 @@ app.post('/api/locations', (req, res) => {
 
 // Start the server
 server.listen(PORT, () => {
-    console.log(`Server started on http://localhost:${PORT}`);
+    console.log(`Server started on http://127.0.0.1:${PORT}`);
 });
