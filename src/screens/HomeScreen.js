@@ -39,13 +39,12 @@ const HomeScreen = ({navigation}) => {
       </View>
       <ScrollView bounces = {false}>
         <View style = {styles.home}> 
-          <Text style ={styles.text1}>Destress your commute</Text>
+         
           <View style = {styles.view1}>
             <View style = {styles.view8}>
-              <Text style ={styles.text2}>Read a book. Take a nap. Stare out the window</Text>
-              <TouchableOpacity onPress={()=>{navigation.navigate("RequestScreen",{state:0})}}>
+              <TouchableOpacity onPress={()=>{navigation.navigate("DestinationScreen",{state:0})}}>
                 <View style = {styles.button1}>
-                  <Text style ={styles.button1Text}>Ride with Uber</Text>
+                  <Text style ={styles.button1Text}>Make a Drop-off route</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={()=>{navigation.navigate("SendLocationScreen",{state:0})}}>
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
     
       button1:{
         height:40,
-        width:150,
+        width:200,
         backgroundColor:colors.black,
         borderRadius:20,
         alignItems:"center",

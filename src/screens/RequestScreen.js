@@ -52,8 +52,8 @@ export default function RequestScreen({navigation, route}) {
   </View>
   
   ),[])
-    console.log('its is the Latitude of User Origin: ' + userOrigin.latitude);
-    console.log('its is the Longitude of User Origin: ' + userOrigin.longitude);
+    //console.log('its is the Latitude of User Origin: ' + userOrigin.latitude);
+    //console.log('its is the Longitude of User Origin: ' + userOrigin.longitude);
   return (
     <SafeAreaView style = {styles.container}> 
       <View style={styles.view1}>
